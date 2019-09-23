@@ -509,6 +509,12 @@ public:
     void SetRef( const SCH_SHEET_PATH* aSheet, const wxString& aReference );
 
     /**
+     * Annotates the component with first available reference number for its reference prefix on a given sheet.
+     * @param aSheet is the sheet path to annotate component on
+     */
+    void Annotate( SCH_SHEET_PATH* aSheet );
+
+    /**
      * Checks if the component has a valid annotation (reference) for the given sheet path
      * @param aSheet is the sheet path to test
      * @return true if the component exists on that sheet and has a valid reference

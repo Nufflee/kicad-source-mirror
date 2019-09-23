@@ -44,6 +44,7 @@
 #include <netlist_object.h>
 #include <lib_item.h>
 #include <symbol_lib_table.h>
+#include <sch_reference_list.h>
 
 #include <dialogs/dialog_schematic_find.h>
 
@@ -718,6 +719,44 @@ void SCH_COMPONENT::SetRef( const SCH_SHEET_PATH* sheet, const wxString& ref )
     m_isInNetlist = ! ref.StartsWith( wxT( "#" ) );
 }
 
+void SCH_COMPONENT::Annotate( SCH_SHEET_PATH* aSheet )
+{
+    SCH_REFERENCE_LIST references;
+    wxString prefix = GetPrefix();
+
+    aSheet->GetComponents( references );
+
+    int lastRefNum = 0;
+
+    references.SortByReferenceOnly();
+
+    for ( unsigned i = 0; i < references.GetCount(); i++ ) 
+    {
+        if ( references[i].GetComp()->GetPrefix() == prefix ) 
+        {
+            long refNum = -1;
+
+            references[i].Split();
+
+            if ( !references[i].GetRefNumber().ToLong( &refNum ) )
+            {
+                continue;
+            }
+
+            if ( refNum - lastRefNum > 1 )
+            {
+                break;
+            }
+
+            if ( refNum > lastRefNum ) 
+            {
+                lastRefNum = refNum;
+            }
+        }
+    }
+
+    SetRef( aSheet, prefix << ( lastRefNum + 1 ) );
+}
 
 bool SCH_COMPONENT::IsAnnotated( const SCH_SHEET_PATH* aSheet )
 {
