@@ -52,6 +52,7 @@
 #include <invoke_sch_dialog.h>
 #include <dialogs/dialog_paste_special.h>
 #include <netlist_exporters/netlist_exporter_pspice.h>
+#include <refdes_utils.h>
 
 int SCH_EDITOR_CONTROL::New( const TOOL_EVENT& aEvent )
 {
@@ -871,7 +872,7 @@ int SCH_EDITOR_CONTROL::Redo( const TOOL_EVENT& aEvent )
 bool SCH_EDITOR_CONTROL::doCopy()
 {
     EE_SELECTION_TOOL* selTool = m_toolMgr->GetTool<EE_SELECTION_TOOL>();
-    EE_SELECTION&      selection = selTool->RequestSelection();
+    EE_SELECTION       selection = selTool->RequestSelection();
 
     if( !selection.GetSize() )
         return false;
@@ -890,6 +891,38 @@ bool SCH_EDITOR_CONTROL::doCopy()
     STRING_FORMATTER formatter;
     SCH_LEGACY_PLUGIN plugin;
 
+    // TODO(nufflee): settings
+    if ( true )
+    {
+        std::sort( selection.begin(), selection.end(), []( const EDA_ITEM* left, const EDA_ITEM* right ) 
+        {
+            // TODO(nufflee): Possibly extract this from SCH_REFERENCE_LIST::sortByReferenceOnly
+            if ( left->Type() == SCH_COMPONENT_T && right->Type() == SCH_COMPONENT_T )
+            {
+                SCH_COMPONENT* leftComponent  = (SCH_COMPONENT*) left;
+                SCH_COMPONENT* rightComponent = (SCH_COMPONENT*) right;
+                int ii;
+
+                ii = UTIL::RefDesStringCompare( leftComponent->GetRef( g_CurrentSheet ), rightComponent->GetRef( g_CurrentSheet ) );
+
+                if( ii == 0 )
+                {
+                    ii = leftComponent->GetField( VALUE )->GetText().CmpNoCase( rightComponent->GetField( VALUE )->GetText() );
+                }
+
+                if( ii == 0 )
+                {
+                    ii = leftComponent->GetUnit() - rightComponent->GetUnit();
+                }
+
+                return ii < 0;
+            }
+
+            return false;
+        });
+    }
+
+    // TODO(nufflee): Not a reference this function might be looking for?
     plugin.Format( &selection, &formatter );
 
     return m_toolMgr->SaveClipboard( formatter.GetString() );
@@ -1013,7 +1046,8 @@ int SCH_EDITOR_CONTROL::Paste( const TOOL_EVENT& aEvent )
 
         if( item->Type() == SCH_COMPONENT_T )
         {
-            if( !dropAnnotations && !forceKeepAnnotations )
+            // TODO(nufflee): settings
+            if( !true && !dropAnnotations && !forceKeepAnnotations )
             {
                 for( SCH_ITEM* temp = dlist.GetFirst(); temp != lastExisting; temp = temp->Next() )
                 {
@@ -1065,6 +1099,11 @@ int SCH_EDITOR_CONTROL::Paste( const TOOL_EVENT& aEvent )
                 int unit = component->GetUnit();
                 component->ClearAnnotation( nullptr );
                 component->SetUnit( unit );
+            }
+            // TODO(nufflee): settings
+            else if ( true )
+            {
+                component->Annotate( g_CurrentSheet );
             }
 
             component->Resolve( *symLibTable, partLib );
