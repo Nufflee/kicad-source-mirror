@@ -777,7 +777,18 @@ int SCH_EDIT_TOOL::Duplicate( const TOOL_EVENT& aEvent )
             SCH_COMPONENT* component = (SCH_COMPONENT*) newItem;
 
             component->SetTimeStamp( GetNewTimeStamp() );
-            component->ClearAnnotation( NULL );
+
+            // TODO(nufflee): sort components like when placed
+
+            // TODO(nufflee): settings
+            if ( true ) 
+            {
+                component->Annotate( g_CurrentSheet );
+            }
+            else
+            {
+                component->ClearAnnotation( NULL );
+            }
 
             component->SetParent( m_frame->GetScreen() );
             m_frame->AddToScreen( component );
