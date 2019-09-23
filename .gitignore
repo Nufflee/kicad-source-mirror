@@ -74,6 +74,7 @@ pcbnew/Info.plist
 .*.swp
 *~
 .idea
+.vscode
 .DS_Store
 *.png
 *.kiface
