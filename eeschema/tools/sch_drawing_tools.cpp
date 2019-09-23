@@ -189,6 +189,12 @@ int SCH_DRAWING_TOOLS::PlaceComponent(  const TOOL_EVENT& aEvent  )
             else
             {
                 SCH_COMPONENT* next_comp = nullptr;
+                
+                // TODO(nufflee): settings
+                if ( true )
+                {
+                    component->Annotate( g_CurrentSheet );
+                }
 
                 m_view->ClearPreview();
                 m_frame->AddItemToScreenAndUndoList( component );
