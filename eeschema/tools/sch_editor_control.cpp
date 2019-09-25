@@ -893,8 +893,7 @@ bool SCH_EDITOR_CONTROL::doCopy()
     STRING_FORMATTER formatter;
     SCH_LEGACY_PLUGIN plugin;
 
-    // TODO(nufflee): settings
-    if ( true )
+    if ( SCH_COMPONENT::IsAutoAnnotationEnabled() )
     {
         selection.SortComponentsByRef();
     }
@@ -1022,8 +1021,7 @@ int SCH_EDITOR_CONTROL::Paste( const TOOL_EVENT& aEvent )
 
         if( item->Type() == SCH_COMPONENT_T )
         {
-            // TODO(nufflee): settings
-            if( !true && !dropAnnotations && !forceKeepAnnotations )
+            if( !SCH_COMPONENT::IsAutoAnnotationEnabled() && !dropAnnotations && !forceKeepAnnotations )
             {
                 for( SCH_ITEM* temp = dlist.GetFirst(); temp != lastExisting; temp = temp->Next() )
                 {
@@ -1076,8 +1074,7 @@ int SCH_EDITOR_CONTROL::Paste( const TOOL_EVENT& aEvent )
                 component->ClearAnnotation( nullptr );
                 component->SetUnit( unit );
             }
-            // TODO(nufflee): settings
-            else if ( true )
+            else if ( SCH_COMPONENT::IsAutoAnnotationEnabled() )
             {
                 component->Annotate( g_CurrentSheet );
             }

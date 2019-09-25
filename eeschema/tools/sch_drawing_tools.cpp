@@ -190,8 +190,7 @@ int SCH_DRAWING_TOOLS::PlaceComponent(  const TOOL_EVENT& aEvent  )
             {
                 SCH_COMPONENT* next_comp = nullptr;
                 
-                // TODO(nufflee): settings
-                if ( true )
+                if ( SCH_COMPONENT::IsAutoAnnotationEnabled() )
                 {
                     component->Annotate( g_CurrentSheet );
                 }

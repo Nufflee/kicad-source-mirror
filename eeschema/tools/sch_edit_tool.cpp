@@ -734,8 +734,7 @@ int SCH_EDIT_TOOL::Duplicate( const TOOL_EVENT& aEvent )
     bool copiedSheets = false;
     SCH_SHEET_LIST initial_sheetpathList( g_RootSheet );
 
-    // TODO(nufflee): settings
-    if ( true ) 
+    if ( SCH_COMPONENT::IsAutoAnnotationEnabled() ) 
     {
         selection.SortComponentsByRef();
     }
@@ -786,8 +785,7 @@ int SCH_EDIT_TOOL::Duplicate( const TOOL_EVENT& aEvent )
 
             component->SetTimeStamp( GetNewTimeStamp() );
 
-            // TODO(nufflee): settings
-            if ( true ) 
+            if ( SCH_COMPONENT::IsAutoAnnotationEnabled() ) 
             {
                 component->Annotate( g_CurrentSheet );
             }
