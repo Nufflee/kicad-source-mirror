@@ -127,14 +127,13 @@ void SCH_EDIT_FRAME::InstallPreferences( PAGED_DIALOG* aParent,
     book->AddSubPage( new PANEL_EESCHEMA_COLOR_CONFIG( this, book ), _( "Colors" ) );
     book->AddSubPage( new PANEL_EESCHEMA_TEMPLATE_FIELDNAMES( this, book ),
                       _( "Field Name Templates" ) );
-    book->AddSubPage( new PANEL_EESCHEMA_ANNOTATION_OPTIONS( book ), _( "Annotation Options" ) );
+    book->AddSubPage( new PANEL_EESCHEMA_ANNOTATION_OPTIONS( this, book ), _( "Annotation Options" ) );
 
     aHotkeysPanel->AddHotKeys( GetToolManager() );
 }
 
 
 PARAM_CFG_ARRAY& SCH_EDIT_FRAME::GetProjectFileParameters()
-
 {
     if( !m_projectFileParams.empty() )
         return m_projectFileParams;
