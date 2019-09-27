@@ -723,14 +723,30 @@ void SCH_COMPONENT::SetRef( const SCH_SHEET_PATH* sheet, const wxString& ref )
     m_isInNetlist = ! ref.StartsWith( wxT( "#" ) );
 }
 
-void SCH_COMPONENT::Annotate( SCH_SHEET_PATH* aSheet )
+void SCH_COMPONENT::Annotate( SCH_SHEET_PATH* aSheet, bool aEntireSchematic, ANNOTATE_OPTION_T aAlgoOption )
 {
     SCH_REFERENCE_LIST references;
     wxString prefix = GetPrefix();
 
-    aSheet->GetComponents( references );
+    // Build the sheet list.
+    SCH_SHEET_LIST sheets( g_RootSheet );
 
-    int lastRefNum = 0;
+    if ( aEntireSchematic && aAlgoOption == INCREMENTAL_BY_REF )
+    {
+        sheets.GetComponents( references, false );
+    }
+    else
+    {
+        aSheet->GetComponents( references );
+    }
+
+    int lastRefNum = 1;
+    int interval = 0;
+    
+    if (aAlgoOption != INCREMENTAL_BY_REF)
+    {
+        interval = ( aAlgoOption == SHEET_NUMBER_X_100 ? 100 : 1000 ) * aSheet->GetPageNumber() + 1;
+    }
 
     references.SortByReferenceOnly();
 
@@ -747,7 +763,13 @@ void SCH_COMPONENT::Annotate( SCH_SHEET_PATH* aSheet )
                 continue;
             }
 
-            if ( refNum - lastRefNum > 1 )
+            if ( refNum < interval )
+            {
+                continue;
+            }
+
+            // Check for a gap.
+            if ( ( refNum - interval ) - lastRefNum > 1 )
             {
                 break;
             }
@@ -759,7 +781,16 @@ void SCH_COMPONENT::Annotate( SCH_SHEET_PATH* aSheet )
         }
     }
 
-    SetRef( aSheet, prefix << ( lastRefNum + 1 ) );
+    if (lastRefNum < interval)
+    {
+        lastRefNum = interval;
+    }
+    else
+    {
+        lastRefNum++;
+    }
+
+    SetRef( aSheet, prefix << lastRefNum );
 }
 
 bool SCH_COMPONENT::IsAnnotated( const SCH_SHEET_PATH* aSheet )

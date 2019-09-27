@@ -37,6 +37,7 @@
 #include <lib_item.h>
 #include <sch_pin.h>
 #include <sch_base_frame.h>
+#include <sch_edit_frame.h>
 
 class SCH_SCREEN;
 class SCH_SHEET_PATH;
@@ -515,9 +516,11 @@ public:
 
     /**
      * Annotates the component with first available reference number for its reference prefix on a given sheet.
-     * @param aSheet is the sheet path to annotate component on
+     * @param aSheet is the sheet path to annotate the symbol on
+     * @param aEntireSchematic defines whether the scope of annotation is just the current page or the whole schematic 
+     * @param aAlgoOption is the algorithm option used to annotate the symbol
      */
-    void Annotate( SCH_SHEET_PATH* aSheet );
+    void Annotate( SCH_SHEET_PATH* aSheet, bool aEntireSchematic, ANNOTATE_OPTION_T aAlgoOption );
 
     /**
      * Checks if the component has a valid annotation (reference) for the given sheet path

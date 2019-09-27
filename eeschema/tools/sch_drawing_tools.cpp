@@ -192,7 +192,7 @@ int SCH_DRAWING_TOOLS::PlaceComponent(  const TOOL_EVENT& aEvent  )
                 
                 if ( SCH_COMPONENT::IsAutoAnnotationEnabled() )
                 {
-                    component->Annotate( g_CurrentSheet );
+                    component->Annotate( g_CurrentSheet, SCH_COMPONENT::GetAutoAnnotationScopeOption(), (ANNOTATE_OPTION_T) SCH_COMPONENT::GetAutoAnnotationAlgoOption() );
                 }
 
                 m_view->ClearPreview();
