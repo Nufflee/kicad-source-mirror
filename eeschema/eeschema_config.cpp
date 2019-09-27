@@ -43,6 +43,7 @@
 #include <widgets/widget_eeschema_color_config.h>
 #include <widgets/symbol_tree_pane.h>
 #include <dialogs/panel_libedit_settings.h>
+#include <dialogs/panel_eeschema_annotation_options.h>
 #include <sch_painter.h>
 #include "sch_junction.h"
 #include "eeschema_id.h"
@@ -126,6 +127,7 @@ void SCH_EDIT_FRAME::InstallPreferences( PAGED_DIALOG* aParent,
     book->AddSubPage( new PANEL_EESCHEMA_COLOR_CONFIG( this, book ), _( "Colors" ) );
     book->AddSubPage( new PANEL_EESCHEMA_TEMPLATE_FIELDNAMES( this, book ),
                       _( "Field Name Templates" ) );
+    book->AddSubPage( new PANEL_EESCHEMA_ANNOTATION_OPTIONS( book ), _( "Annotation Options" ) );
 
     aHotkeysPanel->AddHotKeys( GetToolManager() );
 }
@@ -153,6 +155,11 @@ PARAM_CFG_ARRAY& SCH_EDIT_FRAME::GetProjectFileParameters()
     m_projectFileParams.push_back( new PARAM_CFG_BOOL( wxT( "SpiceAjustPassiveValues" ),
                                             &m_spiceAjustPassiveValues, false ) );
 
+    m_projectFileParams.push_back( new PARAM_CFG_BOOL( wxT( "AutoAnnotationEnabled" ),     SCH_COMPONENT::AutoAnnotationEnabledPtr() ) );
+    m_projectFileParams.push_back( new PARAM_CFG_INT( wxT( "AutoAnnotationScope" ),        SCH_COMPONENT::AutoAnnotationScopeOptionPtr(), 0, 0, 1 ) );
+    m_projectFileParams.push_back( new PARAM_CFG_INT( wxT( "AutoAnnotationAlgo" ),   SCH_COMPONENT::AutoAnnotationAlgoOptionPtr(), 0, 0, 2 ) );
+    m_projectFileParams.push_back( new PARAM_CFG_INT( wxT( "AutoAnnotationFirstFreeNum" ), SCH_COMPONENT::AutoAnnotationFirstFreeNumOptionPtr(), 0 ) );
+ 
     m_projectFileParams.push_back( new PARAM_CFG_INT( wxT( "LabSize" ),
                                             &s_defaultTextSize, DEFAULT_SIZE_TEXT, 5, 1000 ) );
 

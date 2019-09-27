@@ -32,6 +32,11 @@ class EE_SELECTION : public SELECTION
 {
 public:
     EDA_ITEM* GetTopLeftItem( bool onlyModules = false ) const override;
+
+    /**
+     * Sorts this selection by reference number of each SCH_COMPONENT (if any are present).
+     */
+    void SortComponentsByRef();
 };
 
 #endif  //  EE_SELECTION_H

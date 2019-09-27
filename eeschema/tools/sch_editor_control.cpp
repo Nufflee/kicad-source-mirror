@@ -872,6 +872,8 @@ int SCH_EDITOR_CONTROL::Redo( const TOOL_EVENT& aEvent )
 bool SCH_EDITOR_CONTROL::doCopy()
 {
     EE_SELECTION_TOOL* selTool = m_toolMgr->GetTool<EE_SELECTION_TOOL>();
+    // Selection has to be copied here because `SortComponentsByRef` invalidates
+    // some iterators in another object.
     EE_SELECTION       selection = selTool->RequestSelection();
 
     if( !selection.GetSize() )
@@ -894,35 +896,9 @@ bool SCH_EDITOR_CONTROL::doCopy()
     // TODO(nufflee): settings
     if ( true )
     {
-        std::sort( selection.begin(), selection.end(), []( const EDA_ITEM* left, const EDA_ITEM* right ) 
-        {
-            // TODO(nufflee): Possibly extract this from SCH_REFERENCE_LIST::sortByReferenceOnly
-            if ( left->Type() == SCH_COMPONENT_T && right->Type() == SCH_COMPONENT_T )
-            {
-                SCH_COMPONENT* leftComponent  = (SCH_COMPONENT*) left;
-                SCH_COMPONENT* rightComponent = (SCH_COMPONENT*) right;
-                int ii;
-
-                ii = UTIL::RefDesStringCompare( leftComponent->GetRef( g_CurrentSheet ), rightComponent->GetRef( g_CurrentSheet ) );
-
-                if( ii == 0 )
-                {
-                    ii = leftComponent->GetField( VALUE )->GetText().CmpNoCase( rightComponent->GetField( VALUE )->GetText() );
-                }
-
-                if( ii == 0 )
-                {
-                    ii = leftComponent->GetUnit() - rightComponent->GetUnit();
-                }
-
-                return ii < 0;
-            }
-
-            return false;
-        });
+        selection.SortComponentsByRef();
     }
 
-    // TODO(nufflee): Not a reference this function might be looking for?
     plugin.Format( &selection, &formatter );
 
     return m_toolMgr->SaveClipboard( formatter.GetString() );

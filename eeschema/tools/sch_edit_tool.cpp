@@ -716,7 +716,9 @@ static KICAD_T duplicatableItems[] =
 
 int SCH_EDIT_TOOL::Duplicate( const TOOL_EVENT& aEvent )
 {
-    EE_SELECTION& selection = m_selectionTool->RequestSelection( duplicatableItems );
+    // Selection has to be copied here because `SortComponentsByRef` invalidates
+    // some iterators in another object.
+    EE_SELECTION selection = m_selectionTool->RequestSelection( duplicatableItems );
 
     if( selection.GetSize() == 0 )
         return 0;
@@ -731,6 +733,12 @@ int SCH_EDIT_TOOL::Duplicate( const TOOL_EVENT& aEvent )
     // Keep track of existing sheet paths. Duplicating a selection can modify this list
     bool copiedSheets = false;
     SCH_SHEET_LIST initial_sheetpathList( g_RootSheet );
+
+    // TODO(nufflee): settings
+    if ( true ) 
+    {
+        selection.SortComponentsByRef();
+    }
 
     for( unsigned ii = 0; ii < selection.GetSize(); ++ii )
     {
@@ -777,8 +785,6 @@ int SCH_EDIT_TOOL::Duplicate( const TOOL_EVENT& aEvent )
             SCH_COMPONENT* component = (SCH_COMPONENT*) newItem;
 
             component->SetTimeStamp( GetNewTimeStamp() );
-
-            // TODO(nufflee): sort components like when placed
 
             // TODO(nufflee): settings
             if ( true ) 

@@ -56,6 +56,10 @@
 
 #include <trace_helpers.h>
 
+bool SCH_COMPONENT::s_autoAnnotateEnabled;
+int  SCH_COMPONENT::s_autoAnnotateScopeOption;
+int  SCH_COMPONENT::s_autoAnnotateAlgoOption;
+int  SCH_COMPONENT::s_autoAnnotateFirstFreeNumOption;
 
 /**
  * Function toUTFTildaText

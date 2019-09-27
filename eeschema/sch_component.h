@@ -102,6 +102,11 @@ private:
 
     bool        m_isInNetlist;  ///< True if the component should appear in the netlist
 
+    static bool s_autoAnnotateEnabled;
+    static int  s_autoAnnotateScopeOption;
+    static int  s_autoAnnotateAlgoOption;
+    static int  s_autoAnnotateFirstFreeNumOption;
+
     /**
      * Defines the hierarchical path and reference of the component.  This allows support
      * for hierarchical sheets that reference the same schematic.  The format for the path
@@ -648,6 +653,21 @@ public:
     bool HasHighlightedPins();
 
     void HighlightPin( LIB_PIN* aPin );
+    
+    static bool IsAutoAnnotationEnabled() { return s_autoAnnotateEnabled; }
+    static int GetAutoAnnotationScopeOption() { return s_autoAnnotateScopeOption; }
+    static int GetAutoAnnotationAlgoOption() { return s_autoAnnotateAlgoOption; }
+    static int GetAutoAnnotationFirstFreeNumOption() { return s_autoAnnotateFirstFreeNumOption; }
+
+    static void SetIsAutoAnnotationEnabled(bool value) { s_autoAnnotateEnabled = value; }
+    static void SetAutoAnnotationScopeOption(int value) { s_autoAnnotateScopeOption = value; }
+    static void SetAutoAnnotationAlgoOption(int value) { s_autoAnnotateAlgoOption = value; }
+    static void SetAutoAnnotationFirstFreeNumOption(int value) { s_autoAnnotateFirstFreeNumOption = value; }
+
+    static bool* AutoAnnotationEnabledPtr() { return &s_autoAnnotateEnabled; }
+    static int* AutoAnnotationScopeOptionPtr() { return &s_autoAnnotateScopeOption; }
+    static int* AutoAnnotationAlgoOptionPtr() { return &s_autoAnnotateAlgoOption; }
+    static int* AutoAnnotationFirstFreeNumOptionPtr() { return &s_autoAnnotateFirstFreeNumOption; }
 
 private:
     bool doIsConnected( const wxPoint& aPosition ) const override;

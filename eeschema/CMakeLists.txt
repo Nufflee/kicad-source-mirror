@@ -97,6 +97,8 @@ set( EESCHEMA_DLGS
     dialogs/panel_eeschema_display_options_base.cpp
     dialogs/panel_eeschema_settings.cpp
     dialogs/panel_eeschema_settings_base.cpp
+    dialogs/panel_eeschema_annotation_options.cpp
+    dialogs/panel_eeschema_annotation_options_base.cpp
     dialogs/panel_libedit_settings.cpp
     dialogs/panel_libedit_settings_base.cpp
     dialogs/panel_sym_lib_table.cpp

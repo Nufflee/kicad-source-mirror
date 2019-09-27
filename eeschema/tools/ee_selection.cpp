@@ -27,6 +27,8 @@
 #include <tools/ee_selection.h>
 #include <sch_item.h>
 #include <lib_item.h>
+#include <sch_component.h>
+#include <refdes_utils.h>
 
 EDA_ITEM* EE_SELECTION::GetTopLeftItem( bool onlyModules ) const
 {
@@ -55,4 +57,33 @@ EDA_ITEM* EE_SELECTION::GetTopLeftItem( bool onlyModules ) const
     }
 
     return static_cast<EDA_ITEM*>( topLeftItem );
+}
+
+void EE_SELECTION::SortComponentsByRef()
+{
+    std::sort( begin(), end(), []( const EDA_ITEM* left, const EDA_ITEM* right ) 
+    {
+        if ( left->Type() == SCH_COMPONENT_T && right->Type() == SCH_COMPONENT_T )
+        {
+            SCH_COMPONENT* leftComponent  = (SCH_COMPONENT*) left;
+            SCH_COMPONENT* rightComponent = (SCH_COMPONENT*) right;
+            int ii;
+
+            ii = UTIL::RefDesStringCompare( leftComponent->GetRef( g_CurrentSheet ), rightComponent->GetRef( g_CurrentSheet ) );
+
+            if( ii == 0 )
+            {
+                ii = leftComponent->GetField( VALUE )->GetText().CmpNoCase( rightComponent->GetField( VALUE )->GetText() );
+            }
+
+            if( ii == 0 )
+            {
+                ii = leftComponent->GetUnit() - rightComponent->GetUnit();
+            }
+
+            return ii < 0;
+        }
+
+        return false;
+    });
 }
