@@ -1021,7 +1021,7 @@ int SCH_EDITOR_CONTROL::Paste( const TOOL_EVENT& aEvent )
 
         if( item->Type() == SCH_COMPONENT_T )
         {
-            if( !SCH_COMPONENT::IsAutoAnnotationEnabled() && !dropAnnotations && !forceKeepAnnotations )
+            if( !dropAnnotations && !forceKeepAnnotations )
             {
                 for( SCH_ITEM* temp = dlist.GetFirst(); temp != lastExisting; temp = temp->Next() )
                 {
@@ -1065,18 +1065,19 @@ int SCH_EDITOR_CONTROL::Paste( const TOOL_EVENT& aEvent )
         {
             SCH_COMPONENT* component = (SCH_COMPONENT*) item;
 
-            if( dropAnnotations )
+            if( dropAnnotations || SCH_COMPONENT::IsAutoAnnotationEnabled() )
             {
+                // preserve the selected unit
+                int unit = component->GetUnit();
+
+                if ( SCH_COMPONENT::IsAutoAnnotationEnabled() )
+                    component->Annotate( g_CurrentSheet, SCH_COMPONENT::GetAutoAnnotationScopeOption(), (ANNOTATE_OPTION_T) SCH_COMPONENT::GetAutoAnnotationAlgoOption() );
+                else
+                    component->ClearAnnotation( nullptr );
+
                 component->SetTimeStamp( GetNewTimeStamp() );
 
-                // clear the annotation, but preserve the selected unit
-                int unit = component->GetUnit();
-                component->ClearAnnotation( nullptr );
                 component->SetUnit( unit );
-            }
-            else if ( SCH_COMPONENT::IsAutoAnnotationEnabled() )
-            {
-                component->Annotate( g_CurrentSheet, SCH_COMPONENT::GetAutoAnnotationScopeOption(), (ANNOTATE_OPTION_T) SCH_COMPONENT::GetAutoAnnotationAlgoOption() );
             }
 
             component->Resolve( *symLibTable, partLib );
