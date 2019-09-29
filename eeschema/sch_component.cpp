@@ -45,6 +45,7 @@
 #include <lib_item.h>
 #include <symbol_lib_table.h>
 #include <sch_reference_list.h>
+#include <refdes_utils.h>
 
 #include <dialogs/dialog_schematic_find.h>
 
@@ -2043,4 +2044,21 @@ bool SCH_COMPONENT::ClearAllHighlightFlags()
     }
 
     return retVal;
+}
+
+bool SCH_COMPONENT::CompareRefDes( SCH_COMPONENT* aOther )
+{
+    int ii = UTIL::RefDesStringCompare( GetRef( g_CurrentSheet ), aOther->GetRef( g_CurrentSheet ) );
+
+    if( ii == 0 )
+    {
+        ii = GetField( VALUE )->GetText().CmpNoCase( aOther->GetField( VALUE )->GetText() );
+    }
+
+    if( ii == 0 )
+    {
+        ii = GetUnit() - aOther->GetUnit();
+    }
+
+    return ii < 0;
 }

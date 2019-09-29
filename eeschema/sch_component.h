@@ -652,6 +652,8 @@ public:
 
     void HighlightPin( LIB_PIN* aPin );
 
+    bool CompareRefDes( SCH_COMPONENT* aOther );
+
 private:
     bool doIsConnected( const wxPoint& aPosition ) const override;
 };

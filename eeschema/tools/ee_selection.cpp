@@ -67,21 +67,8 @@ void EE_SELECTION::SortComponentsByRef()
         {
             SCH_COMPONENT* leftComponent  = (SCH_COMPONENT*) left;
             SCH_COMPONENT* rightComponent = (SCH_COMPONENT*) right;
-            int ii;
 
-            ii = UTIL::RefDesStringCompare( leftComponent->GetRef( g_CurrentSheet ), rightComponent->GetRef( g_CurrentSheet ) );
-
-            if( ii == 0 )
-            {
-                ii = leftComponent->GetField( VALUE )->GetText().CmpNoCase( rightComponent->GetField( VALUE )->GetText() );
-            }
-
-            if( ii == 0 )
-            {
-                ii = leftComponent->GetUnit() - rightComponent->GetUnit();
-            }
-
-            return ii < 0;
+            return leftComponent->CompareRefDes(rightComponent);
         }
 
         return false;

@@ -112,21 +112,7 @@ bool SCH_REFERENCE_LIST::sortByRefAndValue( const SCH_REFERENCE& item1,
 bool SCH_REFERENCE_LIST::sortByReferenceOnly( const SCH_REFERENCE& item1,
                                               const SCH_REFERENCE& item2 )
 {
-    int             ii;
-
-    ii = UTIL::RefDesStringCompare( item1.GetRef(), item2.GetRef() );
-
-    if( ii == 0 )
-    {
-        ii = item1.m_RootCmp->GetField( VALUE )->GetText().CmpNoCase( item2.m_RootCmp->GetField( VALUE )->GetText() );
-    }
-
-    if( ii == 0 )
-    {
-        ii = item1.m_Unit - item2.m_Unit;
-    }
-
-    return ii < 0;
+    return item1.m_RootCmp->CompareRefDes(item2.m_RootCmp);
 }
 
 
