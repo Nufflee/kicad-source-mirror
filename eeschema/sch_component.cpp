@@ -740,21 +740,23 @@ void SCH_COMPONENT::Annotate( SCH_SHEET_PATH* aSheet, bool aEntireSchematic, ANN
         aSheet->GetComponents( references );
     }
 
-    int lastRefNum = 1;
+    int lastRefNum = 0;
     int interval = 0;
-    
-    if (aAlgoOption != INCREMENTAL_BY_REF)
+
+    if ( aAlgoOption != INCREMENTAL_BY_REF )
     {
         interval = ( aAlgoOption == SHEET_NUMBER_X_100 ? 100 : 1000 ) * aSheet->GetPageNumber() + 1;
+
+        lastRefNum++;
     }
 
     references.SortByReferenceOnly();
 
-    for ( unsigned i = 0; i < references.GetCount(); i++ ) 
+    for ( unsigned i = 0; i < references.GetCount(); i++ )
     {
-        if ( references[i].GetComp()->GetPrefix() == prefix ) 
+        if ( references[i].GetComp()->GetPrefix() == prefix )
         {
-            long refNum = -1;
+            long refNum;
 
             references[i].Split();
 
@@ -774,14 +776,14 @@ void SCH_COMPONENT::Annotate( SCH_SHEET_PATH* aSheet, bool aEntireSchematic, ANN
                 break;
             }
 
-            if ( refNum > lastRefNum ) 
+            if ( refNum > lastRefNum )
             {
                 lastRefNum = refNum;
             }
         }
     }
 
-    if (lastRefNum < interval)
+    if ( lastRefNum < interval )
     {
         lastRefNum = interval;
     }

@@ -517,7 +517,7 @@ public:
     /**
      * Annotates the component with first available reference number for its reference prefix on a given sheet.
      * @param aSheet is the sheet path to annotate the symbol on
-     * @param aEntireSchematic defines whether the scope of annotation is just the current page or the whole schematic 
+     * @param aEntireSchematic defines whether the scope of annotation is just the current page or the whole schematic
      * @param aAlgoOption is the algorithm option used to annotate the symbol
      */
     void Annotate( SCH_SHEET_PATH* aSheet, bool aEntireSchematic, ANNOTATE_OPTION_T aAlgoOption );
@@ -656,7 +656,7 @@ public:
     bool HasHighlightedPins();
 
     void HighlightPin( LIB_PIN* aPin );
-    
+
     static bool IsAutoAnnotationEnabled() { return s_autoAnnotateEnabled; }
     static int GetAutoAnnotationScopeOption() { return s_autoAnnotateScopeOption; }
     static int GetAutoAnnotationAlgoOption() { return s_autoAnnotateAlgoOption; }

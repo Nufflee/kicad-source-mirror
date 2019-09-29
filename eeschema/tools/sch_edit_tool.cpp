@@ -734,7 +734,7 @@ int SCH_EDIT_TOOL::Duplicate( const TOOL_EVENT& aEvent )
     bool copiedSheets = false;
     SCH_SHEET_LIST initial_sheetpathList( g_RootSheet );
 
-    if ( SCH_COMPONENT::IsAutoAnnotationEnabled() ) 
+    if ( SCH_COMPONENT::IsAutoAnnotationEnabled() )
     {
         selection.SortComponentsByRef();
     }
@@ -785,7 +785,7 @@ int SCH_EDIT_TOOL::Duplicate( const TOOL_EVENT& aEvent )
 
             component->SetTimeStamp( GetNewTimeStamp() );
 
-            if ( SCH_COMPONENT::IsAutoAnnotationEnabled() ) 
+            if ( SCH_COMPONENT::IsAutoAnnotationEnabled() )
             {
                 component->Annotate( g_CurrentSheet, SCH_COMPONENT::GetAutoAnnotationScopeOption(), (ANNOTATE_OPTION_T) SCH_COMPONENT::GetAutoAnnotationAlgoOption() );
             }

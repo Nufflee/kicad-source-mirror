@@ -61,7 +61,7 @@ EDA_ITEM* EE_SELECTION::GetTopLeftItem( bool onlyModules ) const
 
 void EE_SELECTION::SortComponentsByRef()
 {
-    std::sort( begin(), end(), []( const EDA_ITEM* left, const EDA_ITEM* right ) 
+    std::sort( begin(), end(), []( const EDA_ITEM* left, const EDA_ITEM* right )
     {
         if ( left->Type() == SCH_COMPONENT_T && right->Type() == SCH_COMPONENT_T )
         {
