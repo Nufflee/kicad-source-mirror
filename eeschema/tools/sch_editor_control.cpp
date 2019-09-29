@@ -893,7 +893,7 @@ bool SCH_EDITOR_CONTROL::doCopy()
     STRING_FORMATTER formatter;
     SCH_LEGACY_PLUGIN plugin;
 
-    if ( SCH_COMPONENT::IsAutoAnnotationEnabled() )
+    if ( m_frame->IsAutoAnnotationEnabled() )
     {
         selection.SortComponentsByRef();
     }
@@ -1065,13 +1065,13 @@ int SCH_EDITOR_CONTROL::Paste( const TOOL_EVENT& aEvent )
         {
             SCH_COMPONENT* component = (SCH_COMPONENT*) item;
 
-            if( dropAnnotations || SCH_COMPONENT::IsAutoAnnotationEnabled() )
+            if( dropAnnotations || m_frame->IsAutoAnnotationEnabled() )
             {
                 // preserve the selected unit
                 int unit = component->GetUnit();
 
-                if ( SCH_COMPONENT::IsAutoAnnotationEnabled() )
-                    component->Annotate( g_CurrentSheet, SCH_COMPONENT::GetAutoAnnotationScopeOption(), (ANNOTATE_OPTION_T) SCH_COMPONENT::GetAutoAnnotationAlgoOption() );
+                if ( m_frame->IsAutoAnnotationEnabled() )
+                    component->Annotate( g_CurrentSheet, m_frame->GetAutoAnnotationScopeOption(), m_frame->GetAutoAnnotationAlgoOption() );
                 else
                     component->ClearAnnotation( nullptr );
 

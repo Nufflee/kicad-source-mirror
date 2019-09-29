@@ -38,9 +38,9 @@ bool PANEL_EESCHEMA_ANNOTATION_OPTIONS::TransferDataToWindow()
 
     SetContentEnabled(enabled);
 
-    m_rbScope->SetSelection( SCH_COMPONENT::GetAutoAnnotationScopeOption() );
-    
-    switch ( SCH_COMPONENT::GetAutoAnnotationAlgoOption() )
+    m_rbScope->SetSelection( m_frame->GetAutoAnnotationScopeOption() );
+
+    switch ( m_frame->GetAutoAnnotationAlgoOption() )
     {
         case INCREMENTAL_BY_REF:  m_rbFirstFree->SetValue( true );  break;
         case SHEET_NUMBER_X_100:  m_rbSheetX100->SetValue( true );  break;
@@ -60,15 +60,15 @@ bool PANEL_EESCHEMA_ANNOTATION_OPTIONS::TransferDataFromWindow()
 
     if ( m_rbFirstFree->GetValue() )
     {
-        SCH_COMPONENT::SetAutoAnnotationAlgoOption( 0 );
+        m_frame->SetAutoAnnotationAlgoOption( INCREMENTAL_BY_REF );
     }
     else if ( m_rbSheetX100->GetValue() )
     {
-        SCH_COMPONENT::SetAutoAnnotationAlgoOption( 1 );
+        m_frame->SetAutoAnnotationAlgoOption( SHEET_NUMBER_X_100 );
     }
     else if ( m_rbSheetX1000->GetValue() )
     {
-        SCH_COMPONENT::SetAutoAnnotationAlgoOption( 2 );
+        m_frame->SetAutoAnnotationAlgoOption( SHEET_NUMBER_X_1000 );
     }
 
     long numberAfter;

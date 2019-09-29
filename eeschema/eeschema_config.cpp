@@ -154,11 +154,11 @@ PARAM_CFG_ARRAY& SCH_EDIT_FRAME::GetProjectFileParameters()
     m_projectFileParams.push_back( new PARAM_CFG_BOOL( wxT( "SpiceAjustPassiveValues" ),
                                             &m_spiceAjustPassiveValues, false ) );
 
-    m_projectFileParams.push_back( new PARAM_CFG_BOOL( wxT( "AutoAnnotationEnabled" ),     SCH_COMPONENT::AutoAnnotationEnabledPtr() ) );
-    m_projectFileParams.push_back( new PARAM_CFG_INT( wxT( "AutoAnnotationScope" ),        SCH_COMPONENT::AutoAnnotationScopeOptionPtr(), 0, 0, 1 ) );
-    m_projectFileParams.push_back( new PARAM_CFG_INT( wxT( "AutoAnnotationAlgo" ),   SCH_COMPONENT::AutoAnnotationAlgoOptionPtr(), 0, 0, 2 ) );
-    m_projectFileParams.push_back( new PARAM_CFG_INT( wxT( "AutoAnnotationFirstFreeNum" ), SCH_COMPONENT::AutoAnnotationFirstFreeNumOptionPtr(), 0 ) );
- 
+    m_projectFileParams.push_back( new PARAM_CFG_BOOL( wxT( "AutoAnnotationEnabled" ),      &m_autoAnnotateEnabled ) );
+    m_projectFileParams.push_back( new PARAM_CFG_INT(  wxT( "AutoAnnotationScope" ),        &m_autoAnnotateScopeOption, 0, 0, 1 ) );
+    m_projectFileParams.push_back( new PARAM_CFG_INT(  wxT( "AutoAnnotationAlgo" ),         (int*)&m_autoAnnotateAlgoOption, 0, 0, 2 ) );
+    m_projectFileParams.push_back( new PARAM_CFG_INT(  wxT( "AutoAnnotationFirstFreeNum" ), &m_autoAnnotateFirstFreeNumOption, 0 ) );
+
     m_projectFileParams.push_back( new PARAM_CFG_INT( wxT( "LabSize" ),
                                             &s_defaultTextSize, DEFAULT_SIZE_TEXT, 5, 1000 ) );
 

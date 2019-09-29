@@ -190,9 +190,9 @@ int SCH_DRAWING_TOOLS::PlaceComponent(  const TOOL_EVENT& aEvent  )
             {
                 SCH_COMPONENT* next_comp = nullptr;
                 
-                if ( SCH_COMPONENT::IsAutoAnnotationEnabled() )
+                if ( m_frame->IsAutoAnnotationEnabled() )
                 {
-                    component->Annotate( g_CurrentSheet, SCH_COMPONENT::GetAutoAnnotationScopeOption(), (ANNOTATE_OPTION_T) SCH_COMPONENT::GetAutoAnnotationAlgoOption() );
+                    component->Annotate( g_CurrentSheet, m_frame->GetAutoAnnotationScopeOption(), m_frame->GetAutoAnnotationAlgoOption() );
                 }
 
                 m_view->ClearPreview();
@@ -820,7 +820,7 @@ int SCH_DRAWING_TOOLS::DrawSheet( const TOOL_EVENT& aEvent )
                 m_frame->AddItemToScreenAndUndoList( sheet );
                 m_selectionTool->AddItemToSel( sheet );
             }
-            else 
+            else
             {
                 delete sheet;
             }
