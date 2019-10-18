@@ -741,16 +741,16 @@ void SCH_COMPONENT::Annotate( SCH_SHEET_PATH* aSheet, bool aEntireSchematic, ANN
 
     if ( aAlgoOption != INCREMENTAL_BY_REF )
     {
-        interval = ( aAlgoOption == SHEET_NUMBER_X_100 ? 100 : 1000 ) * aSheet->GetPageNumber() + 1;
-
-        lastRefNum++;
+        interval = ( aAlgoOption == SHEET_NUMBER_X_100 ? 100 : 1000 ) * aSheet->GetPageNumber();
     }
+
+    lastRefNum = interval;
 
     references.SortByReferenceOnly();
 
     for ( unsigned i = 0; i < references.GetCount(); i++ )
     {
-        if ( references[i].GetComp()->GetPrefix() == prefix )
+        if ( references[i].GetComp()->GetPrefix() == prefix && references[i].GetComp()->m_unit == m_unit )
         {
             long refNum;
 
@@ -767,7 +767,7 @@ void SCH_COMPONENT::Annotate( SCH_SHEET_PATH* aSheet, bool aEntireSchematic, ANN
             }
 
             // Check for a gap.
-            if ( ( refNum - interval ) - lastRefNum > 1 )
+            if ( (refNum - interval) - (lastRefNum - interval) > 1 )
             {
                 break;
             }
