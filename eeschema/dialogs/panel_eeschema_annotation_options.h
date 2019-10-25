@@ -41,7 +41,7 @@ private:
     bool TransferDataFromWindow() override;
     bool TransferDataToWindow() override;
 
-    void SetContentEnabled(bool enabled = true);
+    void SetContentEnabled( bool enabled = true );
 };
 
 #endif //KICAD_PANEL_EESCHEMA_ANNOTATION_OPTIONS_H

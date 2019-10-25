@@ -29,15 +29,15 @@
 
 #include <lib_id.h>
 
-#include <sch_field.h>
-#include <transform.h>
 #include <general.h>
-#include <vector>
-#include <set>
 #include <lib_item.h>
-#include <sch_pin.h>
 #include <sch_base_frame.h>
 #include <sch_edit_frame.h>
+#include <sch_field.h>
+#include <sch_pin.h>
+#include <set>
+#include <transform.h>
+#include <vector>
 
 class SCH_SCREEN;
 class SCH_SHEET_PATH;

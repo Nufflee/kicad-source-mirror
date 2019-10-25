@@ -21,32 +21,32 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-#include <fctsys.h>
-#include <pgm_base.h>
-#include <kiface_i.h>
-#include <confirm.h>
-#include <gestfich.h>
-#include <sch_edit_frame.h>
-#include <sch_sheet.h>
-#include <lib_edit_frame.h>
-#include <eeschema_config.h>
-#include <ws_data_model.h>
+#include "eeschema_id.h"
+#include "sch_junction.h"
 #include <class_library.h>
-#include <symbol_lib_table.h>
-#include <wildcards_and_files_ext.h>
-#include <widgets/paged_dialog.h>
-#include <dialogs/panel_eeschema_template_fieldnames.h>
-#include <dialogs/panel_eeschema_settings.h>
+#include <confirm.h>
+#include <dialogs/panel_eeschema_annotation_options.h>
 #include <dialogs/panel_eeschema_display_options.h>
+#include <dialogs/panel_eeschema_settings.h>
+#include <dialogs/panel_eeschema_template_fieldnames.h>
+#include <dialogs/panel_libedit_settings.h>
+#include <eeschema_config.h>
+#include <fctsys.h>
+#include <gestfich.h>
+#include <kiface_i.h>
+#include <lib_edit_frame.h>
 #include <panel_display_options.h>
 #include <panel_hotkeys_editor.h>
-#include <widgets/widget_eeschema_color_config.h>
-#include <widgets/symbol_tree_pane.h>
-#include <dialogs/panel_libedit_settings.h>
-#include <dialogs/panel_eeschema_annotation_options.h>
+#include <pgm_base.h>
+#include <sch_edit_frame.h>
 #include <sch_painter.h>
-#include "sch_junction.h"
-#include "eeschema_id.h"
+#include <sch_sheet.h>
+#include <symbol_lib_table.h>
+#include <widgets/paged_dialog.h>
+#include <widgets/symbol_tree_pane.h>
+#include <widgets/widget_eeschema_color_config.h>
+#include <wildcards_and_files_ext.h>
+#include <ws_data_model.h>
 
 static int s_defaultBusThickness = DEFAULTBUSTHICKNESS;
 static int s_defaultWireThickness  = DEFAULTDRAWLINETHICKNESS;
@@ -127,7 +127,8 @@ void SCH_EDIT_FRAME::InstallPreferences( PAGED_DIALOG* aParent,
     book->AddSubPage( new PANEL_EESCHEMA_COLOR_CONFIG( this, book ), _( "Colors" ) );
     book->AddSubPage( new PANEL_EESCHEMA_TEMPLATE_FIELDNAMES( this, book ),
                       _( "Field Name Templates" ) );
-    book->AddSubPage( new PANEL_EESCHEMA_ANNOTATION_OPTIONS( this, book ), _( "Annotation Options" ) );
+    book->AddSubPage(
+            new PANEL_EESCHEMA_ANNOTATION_OPTIONS( this, book ), _( "Annotation Options" ) );
 
     aHotkeysPanel->AddHotKeys( GetToolManager() );
 }
@@ -154,10 +155,14 @@ PARAM_CFG_ARRAY& SCH_EDIT_FRAME::GetProjectFileParameters()
     m_projectFileParams.push_back( new PARAM_CFG_BOOL( wxT( "SpiceAjustPassiveValues" ),
                                             &m_spiceAjustPassiveValues, false ) );
 
-    m_projectFileParams.push_back( new PARAM_CFG_BOOL( wxT( "AutoAnnotationEnabled" ),      &m_autoAnnotateEnabled ) );
-    m_projectFileParams.push_back( new PARAM_CFG_INT(  wxT( "AutoAnnotationScope" ),        &m_autoAnnotateScopeOption, 0, 0, 1 ) );
-    m_projectFileParams.push_back( new PARAM_CFG_INT(  wxT( "AutoAnnotationAlgo" ),         (int*)&m_autoAnnotateAlgoOption, 0, 0, 2 ) );
-    m_projectFileParams.push_back( new PARAM_CFG_INT(  wxT( "AutoAnnotationFirstFreeNum" ), &m_autoAnnotateFirstFreeNumOption, 0 ) );
+    m_projectFileParams.push_back(
+            new PARAM_CFG_BOOL( wxT( "AutoAnnotationEnabled" ), &m_autoAnnotateEnabled ) );
+    m_projectFileParams.push_back( new PARAM_CFG_INT(
+            wxT( "AutoAnnotationScope" ), &m_autoAnnotateScopeOption, 0, 0, 1 ) );
+    m_projectFileParams.push_back( new PARAM_CFG_INT( wxT( "AutoAnnotationAlgo" ),
+            reinterpret_cast<int*>( &m_autoAnnotateAlgoOption ), 0, 0, 2 ) );
+    m_projectFileParams.push_back( new PARAM_CFG_INT(
+            wxT( "AutoAnnotationFirstFreeNum" ), &m_autoAnnotateFirstFreeNumOption, 0 ) );
 
     m_projectFileParams.push_back( new PARAM_CFG_INT( wxT( "LabSize" ),
                                             &s_defaultTextSize, DEFAULT_SIZE_TEXT, 5, 1000 ) );

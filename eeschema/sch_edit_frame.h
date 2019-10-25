@@ -103,10 +103,10 @@ private:
     wxString                m_DefaultSchematicFileName;
     wxString                m_SelectedNetName;
 
-    bool                    m_autoAnnotateEnabled;
-    int                     m_autoAnnotateScopeOption;
-    ANNOTATE_OPTION_T       m_autoAnnotateAlgoOption;
-    int                     m_autoAnnotateFirstFreeNumOption;
+    bool              m_autoAnnotateEnabled;
+    int               m_autoAnnotateScopeOption;
+    ANNOTATE_OPTION_T m_autoAnnotateAlgoOption;
+    int               m_autoAnnotateFirstFreeNumOption;
 
     PARAM_CFG_ARRAY         m_projectFileParams;
     PARAM_CFG_ARRAY         m_configSettings;
@@ -219,17 +219,41 @@ public:
     bool GetSpiceAjustPassiveValues() const { return m_spiceAjustPassiveValues; }
     void SetSpiceAdjustPassiveValues( bool aEnable ) { m_spiceAjustPassiveValues = aEnable; }
 
-    bool IsAutoAnnotationEnabled() { return m_autoAnnotateEnabled; }
-    void SetIsAutoAnnotationEnabled(bool value) { m_autoAnnotateEnabled = value; }
+    bool IsAutoAnnotationEnabled()
+    {
+        return m_autoAnnotateEnabled;
+    }
+    void SetIsAutoAnnotationEnabled( bool value )
+    {
+        m_autoAnnotateEnabled = value;
+    }
 
-    int GetAutoAnnotationScopeOption() { return m_autoAnnotateScopeOption; }
-    void SetAutoAnnotationScopeOption(int value) { m_autoAnnotateScopeOption = value; }
+    int GetAutoAnnotationScopeOption()
+    {
+        return m_autoAnnotateScopeOption;
+    }
+    void SetAutoAnnotationScopeOption( int value )
+    {
+        m_autoAnnotateScopeOption = value;
+    }
 
-    ANNOTATE_OPTION_T GetAutoAnnotationAlgoOption() { return m_autoAnnotateAlgoOption; }
-    void SetAutoAnnotationAlgoOption(ANNOTATE_OPTION_T value) { m_autoAnnotateAlgoOption = value; }
+    ANNOTATE_OPTION_T GetAutoAnnotationAlgoOption()
+    {
+        return m_autoAnnotateAlgoOption;
+    }
+    void SetAutoAnnotationAlgoOption( ANNOTATE_OPTION_T value )
+    {
+        m_autoAnnotateAlgoOption = value;
+    }
 
-    int GetAutoAnnotationFirstFreeNumOption() { return m_autoAnnotateFirstFreeNumOption; }
-    void SetAutoAnnotationFirstFreeNumOption(int value) { m_autoAnnotateFirstFreeNumOption = value; }
+    int GetAutoAnnotationFirstFreeNumOption()
+    {
+        return m_autoAnnotateFirstFreeNumOption;
+    }
+    void SetAutoAnnotationFirstFreeNumOption( int value )
+    {
+        m_autoAnnotateFirstFreeNumOption = value;
+    }
 
     /// accessor to the destination directory to use when generating plot files.
     const wxString& GetPlotDirectoryName() const { return m_plotDirectoryName; }

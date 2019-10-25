@@ -22,37 +22,37 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-#include <fctsys.h>
-#include <kiway.h>
-#include <sch_view.h>
-#include <sch_edit_frame.h>
-#include <sch_sheet.h>
-#include <sch_line.h>
-#include <connection_graph.h>
-#include <erc.h>
-#include <eeschema_id.h>
-#include <netlist_object.h>
-#include <tool/tool_manager.h>
-#include <tool/picker_tool.h>
-#include <tools/ee_actions.h>
-#include <tools/sch_editor_control.h>
-#include <tools/ee_selection.h>
-#include <tools/ee_selection_tool.h>
 #include <advanced_config.h>
-#include <simulation_cursors.h>
-#include <sim/sim_plot_frame.h>
-#include <sch_legacy_plugin.h>
 #include <class_library.h>
 #include <confirm.h>
-#include <sch_painter.h>
-#include <status_popup.h>
-#include <ws_proxy_undo_item.h>
-#include <dialogs/dialog_page_settings.h>
+#include <connection_graph.h>
 #include <dialogs/dialog_fields_editor_global.h>
-#include <invoke_sch_dialog.h>
+#include <dialogs/dialog_page_settings.h>
 #include <dialogs/dialog_paste_special.h>
+#include <eeschema_id.h>
+#include <erc.h>
+#include <fctsys.h>
+#include <invoke_sch_dialog.h>
+#include <kiway.h>
 #include <netlist_exporters/netlist_exporter_pspice.h>
+#include <netlist_object.h>
 #include <refdes_utils.h>
+#include <sch_edit_frame.h>
+#include <sch_legacy_plugin.h>
+#include <sch_line.h>
+#include <sch_painter.h>
+#include <sch_sheet.h>
+#include <sch_view.h>
+#include <sim/sim_plot_frame.h>
+#include <simulation_cursors.h>
+#include <status_popup.h>
+#include <tool/picker_tool.h>
+#include <tool/tool_manager.h>
+#include <tools/ee_actions.h>
+#include <tools/ee_selection.h>
+#include <tools/ee_selection_tool.h>
+#include <tools/sch_editor_control.h>
+#include <ws_proxy_undo_item.h>
 
 int SCH_EDITOR_CONTROL::New( const TOOL_EVENT& aEvent )
 {
@@ -874,7 +874,7 @@ bool SCH_EDITOR_CONTROL::doCopy()
     EE_SELECTION_TOOL* selTool = m_toolMgr->GetTool<EE_SELECTION_TOOL>();
     // Selection has to be copied here because `SortComponentsByRef` invalidates
     // some iterators in another object.
-    EE_SELECTION       selection = selTool->RequestSelection();
+    EE_SELECTION selection = selTool->RequestSelection();
 
     if( !selection.GetSize() )
         return false;
@@ -893,10 +893,8 @@ bool SCH_EDITOR_CONTROL::doCopy()
     STRING_FORMATTER formatter;
     SCH_LEGACY_PLUGIN plugin;
 
-    if ( m_frame->IsAutoAnnotationEnabled() )
-    {
+    if( m_frame->IsAutoAnnotationEnabled() )
         selection.SortComponentsByRef();
-    }
 
     plugin.Format( &selection, &formatter );
 
@@ -1070,8 +1068,9 @@ int SCH_EDITOR_CONTROL::Paste( const TOOL_EVENT& aEvent )
                 // preserve the selected unit
                 int unit = component->GetUnit();
 
-                if ( m_frame->IsAutoAnnotationEnabled() )
-                    component->Annotate( g_CurrentSheet, m_frame->GetAutoAnnotationScopeOption(), m_frame->GetAutoAnnotationAlgoOption() );
+                if( m_frame->IsAutoAnnotationEnabled() )
+                    component->Annotate( g_CurrentSheet, m_frame->GetAutoAnnotationScopeOption(),
+                            m_frame->GetAutoAnnotationAlgoOption() );
                 else
                     component->ClearAnnotation( nullptr );
 

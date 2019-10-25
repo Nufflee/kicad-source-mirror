@@ -112,7 +112,7 @@ bool SCH_REFERENCE_LIST::sortByRefAndValue( const SCH_REFERENCE& item1,
 bool SCH_REFERENCE_LIST::sortByReferenceOnly( const SCH_REFERENCE& item1,
                                               const SCH_REFERENCE& item2 )
 {
-    return item1.m_RootCmp->CompareRefDes(item2.m_RootCmp);
+    return item1.m_RootCmp->CompareRefDes( item2.m_RootCmp );
 }
 
 

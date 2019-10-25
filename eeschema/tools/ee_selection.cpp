@@ -22,13 +22,13 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  */
 
-#include <limits>
 #include <functional>
-#include <tools/ee_selection.h>
-#include <sch_item.h>
 #include <lib_item.h>
-#include <sch_component.h>
+#include <limits>
 #include <refdes_utils.h>
+#include <sch_component.h>
+#include <sch_item.h>
+#include <tools/ee_selection.h>
 
 EDA_ITEM* EE_SELECTION::GetTopLeftItem( bool onlyModules ) const
 {
@@ -61,16 +61,15 @@ EDA_ITEM* EE_SELECTION::GetTopLeftItem( bool onlyModules ) const
 
 void EE_SELECTION::SortComponentsByRef()
 {
-    std::sort( begin(), end(), []( const EDA_ITEM* left, const EDA_ITEM* right )
-    {
-        if ( left->Type() == SCH_COMPONENT_T && right->Type() == SCH_COMPONENT_T )
+    std::sort( begin(), end(), []( EDA_ITEM* left, EDA_ITEM* right ) {
+        if( left->Type() == SCH_COMPONENT_T && right->Type() == SCH_COMPONENT_T )
         {
-            SCH_COMPONENT* leftComponent  = (SCH_COMPONENT*) left;
-            SCH_COMPONENT* rightComponent = (SCH_COMPONENT*) right;
+            SCH_COMPONENT* leftComponent = static_cast<SCH_COMPONENT*>( left );
+            SCH_COMPONENT* rightComponent = static_cast<SCH_COMPONENT*>( right );
 
-            return leftComponent->CompareRefDes(rightComponent);
+            return leftComponent->CompareRefDes( rightComponent );
         }
 
         return false;
-    });
+    } );
 }

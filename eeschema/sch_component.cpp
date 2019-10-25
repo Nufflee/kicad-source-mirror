@@ -33,19 +33,19 @@
 #include <msgpanel.h>
 #include <bitmaps.h>
 
-#include <general.h>
 #include <class_library.h>
-#include <lib_rectangle.h>
+#include <general.h>
+#include <lib_item.h>
 #include <lib_pin.h>
+#include <lib_rectangle.h>
 #include <lib_text.h>
+#include <netlist_object.h>
+#include <refdes_utils.h>
 #include <sch_component.h>
+#include <sch_reference_list.h>
 #include <sch_sheet.h>
 #include <sch_sheet_path.h>
-#include <netlist_object.h>
-#include <lib_item.h>
 #include <symbol_lib_table.h>
-#include <sch_reference_list.h>
-#include <refdes_utils.h>
 
 #include <dialogs/dialog_schematic_find.h>
 
@@ -719,74 +719,60 @@ void SCH_COMPONENT::SetRef( const SCH_SHEET_PATH* sheet, const wxString& ref )
     m_isInNetlist = ! ref.StartsWith( wxT( "#" ) );
 }
 
-void SCH_COMPONENT::Annotate( SCH_SHEET_PATH* aSheet, bool aEntireSchematic, ANNOTATE_OPTION_T aAlgoOption )
+void SCH_COMPONENT::Annotate(
+        SCH_SHEET_PATH* aSheet, bool aEntireSchematic, ANNOTATE_OPTION_T aAlgoOption )
 {
     SCH_REFERENCE_LIST references;
-    wxString prefix = GetPrefix();
+    wxString           prefix = GetPrefix();
 
     // Build the sheet list.
     SCH_SHEET_LIST sheets( g_RootSheet );
 
-    if ( aEntireSchematic && aAlgoOption == INCREMENTAL_BY_REF )
-    {
+    if( aEntireSchematic && aAlgoOption == INCREMENTAL_BY_REF )
         sheets.GetComponents( references, false );
-    }
     else
-    {
         aSheet->GetComponents( references );
-    }
 
     int lastRefNum = 0;
     int interval = 0;
 
-    if ( aAlgoOption != INCREMENTAL_BY_REF )
-    {
+    if( aAlgoOption != INCREMENTAL_BY_REF )
         interval = ( aAlgoOption == SHEET_NUMBER_X_100 ? 100 : 1000 ) * aSheet->GetPageNumber();
-    }
 
     lastRefNum = interval;
 
     references.SortByReferenceOnly();
 
-    for ( unsigned i = 0; i < references.GetCount(); i++ )
+    for( unsigned i = 0; i < references.GetCount(); i++ )
     {
-        if ( references[i].GetComp()->GetPrefix() == prefix && references[i].GetComp()->m_unit == m_unit )
+        if( references[i].GetComp()->GetPrefix() == prefix
+                && references[i].GetComp()->m_unit == m_unit )
         {
             long refNum;
 
             references[i].Split();
 
-            if ( !references[i].GetRefNumber().ToLong( &refNum ) )
-            {
+            if( !references[i].GetRefNumber().ToLong( &refNum ) )
                 continue;
-            }
 
-            if ( refNum < interval )
-            {
+            if( refNum < interval )
                 continue;
-            }
 
             // Check for a gap.
-            if ( (refNum - interval) - (lastRefNum - interval) > 1 )
-            {
+            if( ( refNum - interval ) - ( lastRefNum - interval ) > 1 )
                 break;
-            }
 
-            if ( refNum > lastRefNum )
+            if( refNum > lastRefNum )
             {
                 lastRefNum = refNum;
             }
         }
     }
 
-    if ( lastRefNum < interval )
-    {
+    if( lastRefNum < interval )
         lastRefNum = interval;
-    }
     else
-    {
         lastRefNum++;
-    }
 
     SetRef( aSheet, prefix << lastRefNum );
 }
@@ -2048,17 +2034,14 @@ bool SCH_COMPONENT::ClearAllHighlightFlags()
 
 bool SCH_COMPONENT::CompareRefDes( SCH_COMPONENT* aOther )
 {
-    int ii = UTIL::RefDesStringCompare( GetRef( g_CurrentSheet ), aOther->GetRef( g_CurrentSheet ) );
+    int ii =
+            UTIL::RefDesStringCompare( GetRef( g_CurrentSheet ), aOther->GetRef( g_CurrentSheet ) );
 
     if( ii == 0 )
-    {
         ii = GetField( VALUE )->GetText().CmpNoCase( aOther->GetField( VALUE )->GetText() );
-    }
 
     if( ii == 0 )
-    {
         ii = GetUnit() - aOther->GetUnit();
-    }
 
     return ii < 0;
 }

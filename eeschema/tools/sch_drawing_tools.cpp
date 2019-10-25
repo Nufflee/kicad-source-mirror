@@ -190,10 +190,9 @@ int SCH_DRAWING_TOOLS::PlaceComponent(  const TOOL_EVENT& aEvent  )
             {
                 SCH_COMPONENT* next_comp = nullptr;
                 
-                if ( m_frame->IsAutoAnnotationEnabled() )
-                {
-                    component->Annotate( g_CurrentSheet, m_frame->GetAutoAnnotationScopeOption(), m_frame->GetAutoAnnotationAlgoOption() );
-                }
+                if( m_frame->IsAutoAnnotationEnabled() )
+                    component->Annotate( g_CurrentSheet, m_frame->GetAutoAnnotationScopeOption(),
+                            m_frame->GetAutoAnnotationAlgoOption() );
 
                 m_view->ClearPreview();
                 m_frame->AddItemToScreenAndUndoList( component );

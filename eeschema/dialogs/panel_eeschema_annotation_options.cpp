@@ -24,9 +24,9 @@
 #include <panel_eeschema_annotation_options.h>
 #include <sch_component.h>
 
-PANEL_EESCHEMA_ANNOTATION_OPTIONS::PANEL_EESCHEMA_ANNOTATION_OPTIONS( SCH_EDIT_FRAME* aFrame, wxWindow* aWindow )
-    : PANEL_EESCHEMA_ANNOTATION_OPTIONS_BASE( aWindow ),
-      m_frame( aFrame )
+PANEL_EESCHEMA_ANNOTATION_OPTIONS::PANEL_EESCHEMA_ANNOTATION_OPTIONS(
+        SCH_EDIT_FRAME* aFrame, wxWindow* aWindow )
+        : PANEL_EESCHEMA_ANNOTATION_OPTIONS_BASE( aWindow ), m_frame( aFrame )
 {
 }
 
@@ -36,18 +36,25 @@ bool PANEL_EESCHEMA_ANNOTATION_OPTIONS::TransferDataToWindow()
 
     m_cbEnabled->SetValue( enabled );
 
-    SetContentEnabled(enabled);
+    SetContentEnabled( enabled );
 
     m_rbScope->SetSelection( m_frame->GetAutoAnnotationScopeOption() );
 
-    switch ( m_frame->GetAutoAnnotationAlgoOption() )
+    switch( m_frame->GetAutoAnnotationAlgoOption() )
     {
-        case INCREMENTAL_BY_REF:  m_rbFirstFree->SetValue( true );  break;
-        case SHEET_NUMBER_X_100:  m_rbSheetX100->SetValue( true );  break;
-        case SHEET_NUMBER_X_1000: m_rbSheetX1000->SetValue( true ); break;
+    case INCREMENTAL_BY_REF:
+        m_rbFirstFree->SetValue( true );
+        break;
+    case SHEET_NUMBER_X_100:
+        m_rbSheetX100->SetValue( true );
+        break;
+    case SHEET_NUMBER_X_1000:
+        m_rbSheetX1000->SetValue( true );
+        break;
     }
 
-    m_textNumberAfter->SetValue( wxString::Format( "%d", m_frame->GetAutoAnnotationFirstFreeNumOption() ) );
+    m_textNumberAfter->SetValue(
+            wxString::Format( "%d", m_frame->GetAutoAnnotationFirstFreeNumOption() ) );
 
     return true;
 }
@@ -58,25 +65,17 @@ bool PANEL_EESCHEMA_ANNOTATION_OPTIONS::TransferDataFromWindow()
 
     m_frame->SetAutoAnnotationScopeOption( m_rbScope->GetSelection() );
 
-    if ( m_rbFirstFree->GetValue() )
-    {
+    if( m_rbFirstFree->GetValue() )
         m_frame->SetAutoAnnotationAlgoOption( INCREMENTAL_BY_REF );
-    }
-    else if ( m_rbSheetX100->GetValue() )
-    {
+    else if( m_rbSheetX100->GetValue() )
         m_frame->SetAutoAnnotationAlgoOption( SHEET_NUMBER_X_100 );
-    }
-    else if ( m_rbSheetX1000->GetValue() )
-    {
+    else if( m_rbSheetX1000->GetValue() )
         m_frame->SetAutoAnnotationAlgoOption( SHEET_NUMBER_X_1000 );
-    }
 
     long numberAfter;
 
-    if ( m_textNumberAfter->GetValue().ToLong( &numberAfter ) )
-    {
+    if( m_textNumberAfter->GetValue().ToLong( &numberAfter ) )
         m_frame->SetAutoAnnotationFirstFreeNumOption( numberAfter );
-    }
 
     m_frame->SaveProjectSettings( false );
 
@@ -88,7 +87,7 @@ void PANEL_EESCHEMA_ANNOTATION_OPTIONS::OnEnableClick( wxCommandEvent& event )
     SetContentEnabled( m_cbEnabled->IsChecked() );
 }
 
-void PANEL_EESCHEMA_ANNOTATION_OPTIONS::SetContentEnabled(bool enabled)
+void PANEL_EESCHEMA_ANNOTATION_OPTIONS::SetContentEnabled( bool enabled )
 {
     m_rbScope->Enable( enabled );
     m_rbFirstFree->Enable( enabled );
